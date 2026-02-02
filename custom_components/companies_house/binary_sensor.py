@@ -1,4 +1,7 @@
+"""Sensor for binary values."""
+
 from __future__ import annotations
+
 from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any
@@ -12,10 +15,12 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-from.entity import CompaniesHouseEntity
-from.coordinator import CompaniesHouseDataUpdateCoordinator
+from .coordinator import CompaniesHouseDataUpdateCoordinator
+from .entity import CompaniesHouseEntity
+
 
 def safe_get(data: dict, *keys: str) -> Any | None:
+    """Safely get nested dictionary values."""
     current = data
     for key in keys:
         if not isinstance(current, dict):
@@ -23,9 +28,13 @@ def safe_get(data: dict, *keys: str) -> Any | None:
         current = current.get(key)
     return current
 
+
 @dataclass(frozen=True, kw_only=True)
 class CompaniesHouseBinarySensorEntityDescription(BinarySensorEntityDescription):
+    """Sensor entity description class."""
+
     value_fn: Callable[[dict[str, Any]], bool | None]
+
 
 BINARY_SENSOR_TYPES: tuple[CompaniesHouseBinarySensorEntityDescription, ...] = (
     CompaniesHouseBinarySensorEntityDescription(
@@ -65,24 +74,35 @@ BINARY_SENSOR_TYPES: tuple[CompaniesHouseBinarySensorEntityDescription, ...] = (
     ),
 )
 
+
 async def async_setup_entry(
     hass: HomeAssistant,
     entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
+    """Set up the binary sensors from a config entry."""
     coordinator = entry.runtime_data
     async_add_entities(
         CompaniesHouseBinarySensor(coordinator, description)
         for description in BINARY_SENSOR_TYPES
     )
 
+
 class CompaniesHouseBinarySensor(CompaniesHouseEntity, BinarySensorEntity):
+    """Sensor entity class."""
+
     entity_description: CompaniesHouseBinarySensorEntityDescription
 
-    def __init__(self, coordinator: CompaniesHouseDataUpdateCoordinator, description: CompaniesHouseBinarySensorEntityDescription) -> None:
+    def __init__(
+        self,
+        coordinator: CompaniesHouseDataUpdateCoordinator,
+        description: CompaniesHouseBinarySensorEntityDescription,
+    ) -> None:
+        """Initialize the binary sensor."""
         super().__init__(coordinator, description.key)
         self.entity_description = description
 
     @property
     def is_on(self) -> bool | None:
+        """Return true if the binary sensor is on."""
         return self.entity_description.value_fn(self.coordinator.data)

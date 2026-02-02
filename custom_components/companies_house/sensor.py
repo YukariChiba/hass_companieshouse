@@ -1,3 +1,5 @@
+"""Sensor for ordinary values."""
+
 from __future__ import annotations
 
 from collections.abc import Callable
@@ -29,6 +31,7 @@ def _parse_ch_date(date_str: str | None) -> date | None:
 
 
 def safe_get(data: dict, *keys: str) -> Any | None:
+    """Safely get nested dictionary values."""
     current = data
     for key in keys:
         if not isinstance(current, dict):
@@ -38,9 +41,10 @@ def safe_get(data: dict, *keys: str) -> Any | None:
 
 
 def format_address(address_data: dict | None) -> str | None:
+    """Format an address dictionary into a string."""
     if not address_data:
         return None
-    
+
     parts = [
         address_data.get("premises"),
         address_data.get("address_line_1"),
@@ -55,6 +59,8 @@ def format_address(address_data: dict | None) -> str | None:
 
 @dataclass(frozen=True, kw_only=True)
 class CompaniesHouseSensorEntityDescription(SensorEntityDescription):
+    """Sensor entity description class."""
+
     value_fn: Callable[[dict[str, Any]], StateType | date]
 
 
@@ -135,7 +141,9 @@ SENSOR_TYPES: tuple[CompaniesHouseSensorEntityDescription, ...] = (
         key="sic_codes",
         translation_key="sic_codes",
         icon="mdi:tag-multiple",
-        value_fn=lambda data: ", ".join(data.get("sic_codes", [])) if data.get("sic_codes") else None,
+        value_fn=lambda data: ", ".join(data.get("sic_codes", []))
+        if data.get("sic_codes")
+        else None,
     ),
     CompaniesHouseSensorEntityDescription(
         key="last_accounts_period_end",
@@ -181,6 +189,7 @@ async def async_setup_entry(
     entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
+    """Set up the sensors from a config entry."""
     coordinator = entry.runtime_data
     async_add_entities(
         CompaniesHouseSensor(coordinator, description) for description in SENSOR_TYPES
@@ -188,6 +197,8 @@ async def async_setup_entry(
 
 
 class CompaniesHouseSensor(CompaniesHouseEntity, SensorEntity):
+    """Sensor entity class."""
+
     entity_description: CompaniesHouseSensorEntityDescription
 
     def __init__(
@@ -195,9 +206,11 @@ class CompaniesHouseSensor(CompaniesHouseEntity, SensorEntity):
         coordinator: CompaniesHouseDataUpdateCoordinator,
         description: CompaniesHouseSensorEntityDescription,
     ) -> None:
+        """Initialize the sensor."""
         super().__init__(coordinator, description.key)
         self.entity_description = description
 
     @property
     def native_value(self) -> StateType | date:
+        """Return the state of the sensor."""
         return self.entity_description.value_fn(self.coordinator.data)

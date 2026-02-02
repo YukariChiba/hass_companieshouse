@@ -1,13 +1,19 @@
+"""Scheduled task for polling API."""
+
 from datetime import timedelta
+
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 from homeassistant.exceptions import ConfigEntryAuthFailed
+from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
-from .const import DOMAIN, _LOGGER
 from .api import CompaniesHouseApiClient
+from .const import _LOGGER, DOMAIN
+
 
 class CompaniesHouseDataUpdateCoordinator(DataUpdateCoordinator[dict]):
+    """Coordinator for data updating."""
+
     config_entry: ConfigEntry
 
     def __init__(
@@ -17,9 +23,10 @@ class CompaniesHouseDataUpdateCoordinator(DataUpdateCoordinator[dict]):
         company_number: str,
         update_interval_minutes: int,
     ) -> None:
+        """Create a update task from company number and intervals."""
         self.api_client = api_client
         self.company_number = company_number
-        
+
         super().__init__(
             hass,
             _LOGGER,
@@ -38,5 +45,5 @@ class CompaniesHouseDataUpdateCoordinator(DataUpdateCoordinator[dict]):
                 raise UpdateFailed(f"Company {self.company_number} not found") from err
             if error_msg == "bad_request":
                 raise UpdateFailed("API returned Bad Request") from err
-            
+
             raise UpdateFailed(f"Error communicating with API: {err}") from err

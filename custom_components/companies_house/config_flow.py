@@ -1,6 +1,9 @@
+"""Config flow for setting up."""
+
 from __future__ import annotations
 
 from typing import Any
+
 import voluptuous as vol
 
 from homeassistant import config_entries
@@ -15,12 +18,16 @@ from .const import (
     DOMAIN,
 )
 
+
 class CompaniesHouseConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
+    """Config flow for Companies House integration."""
+
     VERSION = 1
 
     async def async_step_user(
         self, user_input: dict[str, Any] | None = None
     ) -> FlowResult:
+        """Handle the initial step."""
         errors: dict[str, str] = {}
 
         if user_input is not None:
@@ -38,12 +45,13 @@ class CompaniesHouseConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 data = {
                     CONF_API_KEY: api_key,
                     CONF_COMPANY_NUMBER: company_number,
-                    CONF_UPDATE_INTERVAL: user_input.get(CONF_UPDATE_INTERVAL, DEFAULT_UPDATE_INTERVAL),
+                    CONF_UPDATE_INTERVAL: user_input.get(
+                        CONF_UPDATE_INTERVAL, DEFAULT_UPDATE_INTERVAL
+                    ),
                 }
 
                 return self.async_create_entry(
-                    title=info.get("company_name", company_number), 
-                    data=data
+                    title=info.get("company_name", company_number), data=data
                 )
 
             except ValueError as err:
@@ -52,7 +60,7 @@ class CompaniesHouseConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                     errors["base"] = error_type
                 else:
                     errors["base"] = "cannot_connect"
-            except Exception:
+            except Exception:  # noqa: BLE001
                 errors["base"] = "unknown"
 
         schema = vol.Schema(

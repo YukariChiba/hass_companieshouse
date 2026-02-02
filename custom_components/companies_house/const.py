@@ -1,3 +1,5 @@
+"""Global constants."""
+
 import logging
 
 DOMAIN = "companies_house"
