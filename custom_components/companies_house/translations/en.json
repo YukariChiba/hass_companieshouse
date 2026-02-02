@@ -1,0 +1,47 @@
+{
+    "config": {
+        "step": {
+            "user": {
+                "title": "Connect to Companies House",
+                "description": "Enter your API Key and the Company Number you wish to track.",
+                "data": {
+                    "api_key": "API Key",
+                    "company_number": "Company Number",
+                    "update_interval": "Update Interval (minutes)"
+                }
+            }
+        },
+        "error": {
+            "invalid_auth": "Invalid Authentication. Check your API Key.",
+            "company_not_found": "Company Number not found.",
+            "bad_request": "Invalid Request. Check Company Number format.",
+            "cannot_connect": "Cannot connect to Companies House API.",
+            "unknown": "Unexpected error"
+        }
+    },
+    "entity": {
+        "sensor": {
+            "company_status": { "name": "Status" },
+            "last_accounts_type": { "name": "Last Accounts Type" },
+            "date_of_creation": { "name": "Created On" },
+            "accounts_next_due": { "name": "Accounts Deadline" },
+            "confirmation_statement_next_due": { "name": "Statement Deadline" },
+            "company_type": { "name": "Company Type" },
+            "jurisdiction": { "name": "Jurisdiction" },
+            "registered_office_address": { "name": "Registered Address" },
+            "sic_codes": { "name": "SIC Codes" },
+            "last_accounts_period_end": { "name": "Last Accounts Period End" },
+            "next_accounts_period_start": { "name": "Next Accounts Period Start" },
+            "next_accounts_period_end": { "name": "Next Accounts Period End" },
+            "confirmation_statement_last_made": { "name": "Last Statement Made Up To" }
+        },
+        "binary_sensor": {
+            "accounts_overdue": { "name": "Accounts Overdue" },
+            "confirmation_statement_overdue": { "name": "Statement Overdue" },
+            "has_insolvency_history": { "name": "Insolvency History" },
+            "can_file": { "name": "Can File" },
+            "registered_office_is_in_dispute": { "name": "Address in Dispute" },
+            "undeliverable_registered_office_address": { "name": "Address Undeliverable" }
+        }
+    }
+}

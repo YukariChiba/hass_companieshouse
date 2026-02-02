@@ -1,0 +1,11 @@
+{
+  "domain": "companies_house",
+  "name": "UK Companies House",
+  "codeowners": ["@YukariChiba"],
+  "config_flow": true,
+  "documentation": "https://github.com/YukariChiba/hass_companies_house",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/YukariChiba/hass_companies_house/issues",
+  "requirements": [],
+  "version": "0.1.0"
+}

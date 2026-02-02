@@ -1,0 +1,47 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "连接到英国公司注册局",
+        "description": "请输入您的 API 密钥和公司编号。",
+        "data": {
+          "api_key": "API 密钥",
+          "company_number": "公司编号",
+          "update_interval": "更新间隔（分钟）"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "认证信息无效，请检查 API Key。",
+      "company_not_found": "无效的公司号码。",
+      "bad_request": "无效的请求，请检查公司号码格式。",
+      "cannot_connect": "无法连接到英国公司注册局的 API。",
+      "unknown": "未知错误"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "company_status": { "name": "公司状态" },
+      "last_accounts_type": { "name": "上期账目类型" },
+      "date_of_creation": { "name": "成立日期" },
+      "accounts_next_due": { "name": "账目截止日期" },
+      "confirmation_statement_next_due": { "name": "确认声明截止日期" },
+      "company_type": { "name": "公司类型" },
+      "jurisdiction": { "name": "管辖区" },
+      "registered_office_address": { "name": "注册地址" },
+      "sic_codes": { "name": "SIC 代码" },
+      "last_accounts_period_end": { "name": "上期账目结束日" },
+      "next_accounts_period_start": { "name": "下期账目开始日" },
+      "next_accounts_period_end": { "name": "下期账目结束日" },
+      "confirmation_statement_last_made": { "name": "上次确认声明日期" }
+    },
+    "binary_sensor": {
+      "accounts_overdue": { "name": "账目逾期" },
+      "confirmation_statement_overdue": { "name": "确认声明逾期" },
+      "has_insolvency_history": { "name": "有破产记录" },
+      "can_file": { "name": "允许提交" },
+      "registered_office_is_in_dispute": { "name": "地址存在争议" },
+      "undeliverable_registered_office_address": { "name": "地址无法送达" }
+    }
+  }
+}
