@@ -7,5 +7,7 @@
   "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/YukariChiba/hass_companies_house/issues",
   "requirements": [],
+  "dependencies": [],
+  "integration_type": "hub",
   "version": "0.1.0"
 }
