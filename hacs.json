@@ -1,6 +1,6 @@
 {
   "name": "UK Companies House",
-  "country": "UK",
+  "country": "GB",
   "render_readme": true,
   "iot_class": "cloud_polling"
 }
